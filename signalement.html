@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signaler un incident - RouteAlert Cameroun</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-road"></i>
+                <span>RouteAlert Cameroun</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="signalement.html" class="nav-link active">Signaler</a>
+                <a href="actualites.html" class="nav-link">Actualités</a>
+                <a href="profil.html" class="nav-link">Profil</a>
+                <a href="connexion.html" class="nav-link">Connexion</a>
+            </nav>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-exclamation-triangle"></i> Signaler un incident</h1>
+                <p>Aidez la communauté en signalant les incidents routiers en temps réel</p>
+            </div>
+
+            <div class="signalement-container">
+                <div class="signalement-form-container">
+                    <form id="signalement-form" class="form-container">
+                        <div class="form-group">
+                            <label for="type_incident">Type d'incident *</label>
+                            <select id="type_incident" name="type_incident" class="form-control form-select" required>
+                                <option value="">Sélectionnez un type</option>
+                                <option value="accident">🚗 Accident</option>
+                                <option value="embouteillage">🚦 Embouteillage</option>
+                                <option value="obstacle">⚠️ Obstacle sur la route</option>
+                                <option value="route_fermee">🚧 Route fermée</option>
+                                <option value="travaux">🔨 Travaux</option>
+                                <option value="autre">❓ Autre</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ville">Ville *</label>
+                            <select id="ville" name="ville" class="form-control form-select" required>
+                                <option value="">Sélectionnez une ville</option>
+                                <option value="Yaoundé">Yaoundé</option>
+                                <option value="Douala">Douala</option>
+                                <option value="Garoua">Garoua</option>
+                                <option value="Bamenda">Bamenda</option>
+                                <option value="Maroua">Maroua</option>
+                                <option value="Bafoussam">Bafoussam</option>
+                                <option value="Ngaoundéré">Ngaoundéré</option>
+                                <option value="Bertoua">Bertoua</option>
+                                <option value="Ebolowa">Ebolowa</option>
+                                <option value="Kribi">Kribi</option>
+                                <option value="Limbe">Limbe</option>
+                                <option value="Buea">Buea</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quartier">Quartier/Zone</label>
+                            <input type="text" id="quartier" name="quartier" class="form-control" 
+                                   placeholder="Ex: Bastos, Akwa, Centre-ville...">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description de l'incident *</label>
+                            <textarea id="description" name="description" class="form-control" rows="4" 
+                                      placeholder="Décrivez l'incident en détail..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gravite">Niveau de gravité</label>
+                            <select id="gravite" name="gravite" class="form-control form-select">
+                                <option value="faible">🟢 Faible - Circulation possible</option>
+                                <option value="modere" selected>🟡 Modéré - Circulation ralentie</option>
+                                <option value="eleve">🟠 Élevé - Circulation difficile</option>
+                                <option value="critique">🔴 Critique - Route bloquée</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="photo">Photo de l'incident</label>
+                            <div class="file-upload">
+                                <input type="file" id="photo" name="photo" accept="image/*" capture="environment">
+                                <label for="photo" class="file-upload-label">
+                                    <i class="fas fa-camera"></i>
+                                    <span>Prendre une photo ou sélectionner un fichier</span>
+                                </label>
+                            </div>
+                            <small>Formats acceptés: JPG, PNG (max 5MB)</small>
+                        </div>
+
+                        <div class="location-section">
+                            <h3><i class="fas fa-map-marker-alt"></i> Localisation</h3>
+                            <div class="location-buttons">
+                                <button type="button" id="get-location" class="btn btn-secondary">
+                                    <i class="fas fa-crosshairs"></i>
+                                    Utiliser ma position
+                                </button>
+                                <button type="button" id="select-on-map" class="btn btn-secondary">
+                                    <i class="fas fa-map"></i>
+                                    Sélectionner sur la carte
+                                </button>
+                            </div>
+                            
+                            <div id="mini-map" style="height: 300px; margin-top: 1rem; border-radius: 10px; overflow: hidden;"></div>
+                            
+                            <div class="coordinates-display">
+                                <div class="form-group">
+                                    <label for="latitude">Latitude</label>
+                                    <input type="number" id="latitude" name="latitude" class="form-control" 
+                                           step="any" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitude">Longitude</label>
+                                    <input type="number" id="longitude" name="longitude" class="form-control" 
+                                           step="any" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="anonymous" name="anonymous">
+                                Signalement anonyme
+                            </label>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                                Envoyer le signalement
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="fas fa-undo"></i>
+                                Réinitialiser
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="signalement-info">
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> Conseils pour un bon signalement</h3>
+                        <ul>
+                            <li>Soyez précis dans votre description</li>
+                            <li>Indiquez l'heure approximative de l'incident</li>
+                            <li>Mentionnez le sens de circulation affecté</li>
+                            <li>Ajoutez une photo si possible (sans vous mettre en danger)</li>
+                            <li>Vérifiez que l'incident n'a pas déjà été signalé</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-shield-alt"></i> Votre sécurité d'abord</h3>
+                        <ul>
+                            <li>Ne vous arrêtez jamais sur une voie de circulation</li>
+                            <li>Garez-vous dans un endroit sûr avant de signaler</li>
+                            <li>N'utilisez pas votre téléphone en conduisant</li>
+                            <li>En cas d'urgence, contactez les services d'urgence (Police: 1500)</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-clock"></i> Incidents récents</h3>
+                        <div id="recent-incidents">
+                            <p>Chargement des incidents récents...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RouteAlert Cameroun</h3>
+                    <p>Application dédiée à la sécurité routière au Cameroun.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact d'urgence</h4>
+                    <p><i class="fas fa-phone"></i> Police: 1500</p>
+                    <p><i class="fas fa-phone"></i> Pompiers: 1880</p>
+                    <p><i class="fas fa-phone"></i> SAMU: 1515</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/signalement.js"></script>
+</body>
+</html>

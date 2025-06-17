@@ -1,24 +1,179 @@
+
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>road-alert-cameroun</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RouteAlert Cameroun - Accueil</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-road"></i>
+                <span>RouteAlert Cameroun</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Accueil</a>
+                <a href="signalement.html" class="nav-link">Signaler</a>
+                <a href="actualites.html" class="nav-link">Actualités</a>
+                <a href="profil.html" class="nav-link">Profil</a>
+                <a href="connexion.html" class="nav-link">Connexion</a>
+            </nav>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
 
-    <meta property="og:title" content="road-alert-cameroun" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Signaler et suivre les incidents routiers au Cameroun</h1>
+                    <p>Contribuez à la sécurité routière en signalant les accidents, embouteillages et obstacles en temps réel.</p>
+                    <div class="hero-actions">
+                        <a href="signalement.html" class="btn btn-primary">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Signaler un incident
+                        </a>
+                        <a href="#map" class="btn btn-secondary">
+                            <i class="fas fa-map"></i>
+                            Voir la carte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="stat-number" id="totalIncidents">0</span>
+                        <span class="stat-label">Incidents signalés</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="stat-number" id="resolvedIncidents">0</span>
+                        <span class="stat-label">Incidents résolus</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span class="stat-number" id="totalUsers">0</span>
+                        <span class="stat-label">Utilisateurs actifs</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Service continu</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        <!-- Map Section -->
+        <section class="map-section" id="map">
+            <div class="container">
+                <h2>Carte des incidents en temps réel</h2>
+                <div class="map-container">
+                    <div id="leaflet-map"></div>
+                    <div class="map-legend">
+                        <h3>Légende</h3>
+                        <div class="legend-item">
+                            <div class="legend-color accident"></div>
+                            <span>Accident</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color embouteillage"></div>
+                            <span>Embouteillage</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color obstacle"></div>
+                            <span>Obstacle</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color route-fermee"></div>
+                            <span>Route fermée</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2>Fonctionnalités principales</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Géolocalisation précise</h3>
+                        <p>Signalez les incidents avec votre position exacte grâce à la géolocalisation GPS.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bell"></i>
+                        <h3>Notifications en temps réel</h3>
+                        <p>Recevez des alertes sur les incidents dans vos zones favorites.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-camera"></i>
+                        <h3>Photos et preuves</h3>
+                        <p>Ajoutez des photos pour documenter les incidents signalés.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users-cog"></i>
+                        <h3>Communauté active</h3>
+                        <p>Collaborez avec d'autres utilisateurs pour améliorer la sécurité routière.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RouteAlert Cameroun</h3>
+                    <p>Application dédiée à la sécurité routière au Cameroun.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens utiles</h4>
+                    <ul>
+                        <li><a href="signalement.html">Signaler un incident</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contact@routealert.cm</p>
+                    <p><i class="fas fa-phone"></i> +237 6XX XXX XXX</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 RouteAlert Cameroun. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
 </html>

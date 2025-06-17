@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualités - RouteAlert Cameroun</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-road"></i>
+                <span>RouteAlert Cameroun</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="signalement.html" class="nav-link">Signaler</a>
+                <a href="actualites.html" class="nav-link active">Actualités</a>
+                <a href="profil.html" class="nav-link">Profil</a>
+                <a href="connexion.html" class="nav-link">Connexion</a>
+            </nav>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-newspaper"></i> Actualités</h1>
+                <p>Restez informé des dernières nouvelles de la sécurité routière au Cameroun</p>
+            </div>
+
+            <!-- Filtres -->
+            <div class="news-filters">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-category="all">
+                        <i class="fas fa-list"></i> Toutes
+                    </button>
+                    <button class="filter-tab" data-category="securite">
+                        <i class="fas fa-shield-alt"></i> Sécurité
+                    </button>
+                    <button class="filter-tab" data-category="circulation">
+                        <i class="fas fa-traffic-light"></i> Circulation
+                    </button>
+                    <button class="filter-tab" data-category="meteo">
+                        <i class="fas fa-cloud-rain"></i> Météo
+                    </button>
+                    <button class="filter-tab" data-category="interventions">
+                        <i class="fas fa-ambulance"></i> Interventions
+                    </button>
+                </div>
+            </div>
+
+            <!-- Articles à la une -->
+            <section class="featured-news">
+                <h2>À la une</h2>
+                <div class="featured-articles" id="featured-articles">
+                    <!-- Les articles seront chargés dynamiquement -->
+                </div>
+            </section>
+
+            <!-- Dernières actualités -->
+            <section class="latest-news">
+                <h2>Dernières actualités</h2>
+                <div class="news-grid" id="news-grid">
+                    <!-- Les articles seront chargés dynamiquement -->
+                </div>
+                
+                <div class="load-more-container">
+                    <button id="load-more-btn" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> Charger plus d'articles
+                    </button>
+                </div>
+            </section>
+
+            <!-- Sidebar avec infos utiles -->
+            <aside class="news-sidebar">
+                <div class="sidebar-widget">
+                    <h3><i class="fas fa-phone"></i> Contacts d'urgence</h3>
+                    <div class="emergency-contacts">
+                        <div class="contact-item">
+                            <span class="contact-service">Police</span>
+                            <span class="contact-number">1500</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-service">Pompiers</span>
+                            <span class="contact-number">1880</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-service">SAMU</span>
+                            <span class="contact-number">1515</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-service">Gendarmerie</span>
+                            <span class="contact-number">1701</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3><i class="fas fa-chart-line"></i> Statistiques du jour</h3>
+                    <div class="daily-stats" id="daily-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Incidents signalés</span>
+                            <span class="stat-value" id="daily-incidents">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Incidents résolus</span>
+                            <span class="stat-value" id="daily-resolved">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Temps de résolution moyen</span>
+                            <span class="stat-value" id="avg-resolution">0h</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3><i class="fas fa-bullhorn"></i> Alertes importantes</h3>
+                    <div class="important-alerts" id="important-alerts">
+                        <!-- Les alertes seront chargées dynamiquement -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Modal pour l'article complet -->
+    <div id="article-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-article-title"></h3>
+                <button class="modal-close" onclick="closeArticleModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-article-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RouteAlert Cameroun</h3>
+                    <p>Application dédiée à la sécurité routière au Cameroun.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Suivez-nous</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/actualites.js"></script>
+</body>
+</html>

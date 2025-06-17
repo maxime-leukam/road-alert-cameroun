@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil - RouteAlert Cameroun</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-road"></i>
+                <span>RouteAlert Cameroun</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Accueil</a>
+                <a href="signalement.html" class="nav-link">Signaler</a>
+                <a href="actualites.html" class="nav-link">Actualités</a>
+                <a href="profil.html" class="nav-link active">Profil</a>
+                <a href="#" onclick="logout()" class="nav-link">Déconnexion</a>
+            </nav>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <div class="profile-container">
+                <!-- Sidebar du profil -->
+                <aside class="profile-sidebar">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <img id="profile-avatar" src="https://via.placeholder.com/150" alt="Photo de profil">
+                            <button class="avatar-edit" onclick="editAvatar()">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <h3 id="profile-name">Nom Utilisateur</h3>
+                        <p id="profile-email">email@exemple.com</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="user-incidents">0</span>
+                                <span class="stat-label">Incidents signalés</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="user-contributions">0</span>
+                                <span class="stat-label">Contributions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="profile-nav">
+                        <a href="#" class="profile-nav-link active" data-tab="overview">
+                            <i class="fas fa-tachometer-alt"></i> Vue d'ensemble
+                        </a>
+                        <a href="#" class="profile-nav-link" data-tab="incidents">
+                            <i class="fas fa-exclamation-triangle"></i> Mes incidents
+                        </a>
+                        <a href="#" class="profile-nav-link" data-tab="favorites">
+                            <i class="fas fa-heart"></i> Villes favorites
+                        </a>
+                        <a href="#" class="profile-nav-link" data-tab="notifications">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                        <a href="#" class="profile-nav-link" data-tab="settings">
+                            <i class="fas fa-cog"></i> Paramètres
+                        </a>
+                        <a href="#" class="profile-nav-link" data-tab="support">
+                            <i class="fas fa-question-circle"></i> Support
+                        </a>
+                    </nav>
+                </aside>
+
+                <!-- Contenu principal du profil -->
+                <main class="profile-content">
+                    <!-- Vue d'ensemble -->
+                    <div id="overview-tab" class="profile-tab active">
+                        <h2><i class="fas fa-tachometer-alt"></i> Vue d'ensemble</h2>
+                        
+                        <div class="overview-stats">
+                            <div class="overview-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="overview-incidents">0</h3>
+                                    <p>Incidents signalés</p>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="overview-resolved">0</h3>
+                                    <p>Incidents résolus</p>
+                                </div>
+                            </div>
+                            
+                            <div class="overview-card">
+                                <div class="card-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="overview-score">0</h3>
+                                    <p>Score contribution</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="recent-activity">
+                            <h3>Activité récente</h3>
+                            <div id="recent-activity-list">
+                                <!-- Chargé dynamiquement -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mes incidents -->
+                    <div id="incidents-tab" class="profile-tab">
+                        <h2><i class="fas fa-exclamation-triangle"></i> Mes incidents</h2>
+                        
+                        <div class="incidents-filters">
+                            <select id="incidents-filter-status">
+                                <option value="all">Tous les statuts</option>
+                                <option value="nouveau">Nouveau</option>
+                                <option value="en_cours">En cours</option>
+                                <option value="resolu">Résolu</option>
+                            </select>
+                            
+                            <select id="incidents-filter-type">
+                                <option value="all">Tous les types</option>
+                                <option value="accident">Accident</option>
+                                <option value="embouteillage">Embouteillage</option>
+                                <option value="obstacle">Obstacle</option>
+                                <option value="route_fermee">Route fermée</option>
+                            </select>
+                        </div>
+
+                        <div id="user-incidents-list" class="incidents-list">
+                            <!-- Chargé dynamiquement -->
+                        </div>
+                    </div>
+
+                    <!-- Villes favorites -->
+                    <div id="favorites-tab" class="profile-tab">
+                        <h2><i class="fas fa-heart"></i> Villes favorites</h2>
+                        <p>Gérez vos villes favorites pour recevoir des notifications sur les incidents.</p>
+                        
+                        <div class="add-favorite">
+                            <h3>Ajouter une ville favorite</h3>
+                            <form id="add-favorite-form">
+                                <div class="form-group">
+                                    <select id="favorite-city" class="form-control">
+                                        <option value="">Sélectionnez une ville</option>
+                                        <option value="Yaoundé">Yaoundé</option>
+                                        <option value="Douala">Douala</option>
+                                        <option value="Garoua">Garoua</option>
+                                        <option value="Bamenda">Bamenda</option>
+                                        <option value="Maroua">Maroua</option>
+                                        <option value="Bafoussam">Bafoussam</option>
+                                        <option value="Ngaoundéré">Ngaoundéré</option>
+                                        <option value="Bertoua">Bertoua</option>
+                                        <option value="Ebolowa">Ebolowa</option>
+                                        <option value="Kribi">Kribi</option>
+                                        <option value="Limbe">Limbe</option>
+                                        <option value="Buea">Buea</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Ajouter
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="favorite-cities-list" class="favorite-cities">
+                            <!-- Chargé dynamiquement -->
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div id="notifications-tab" class="profile-tab">
+                        <h2><i class="fas fa-bell"></i> Notifications</h2>
+                        
+                        <div class="notification-settings">
+                            <h3>Paramètres de notification</h3>
+                            <form id="notification-settings-form">
+                                <div class="setting-item">
+                                    <label class="switch">
+                                        <input type="checkbox" id="email-notifications" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h4>Notifications par email</h4>
+                                        <p>Recevoir les alertes par email</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="switch">
+                                        <input type="checkbox" id="browser-notifications" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h4>Notifications navigateur</h4>
+                                        <p>Recevoir les alertes dans le navigateur</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="setting-item">
+                                    <label class="switch">
+                                        <input type="checkbox" id="incident-notifications" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <div class="setting-info">
+                                        <h4>Nouveaux incidents</h4>
+                                        <p>Alertes pour les nouveaux incidents dans vos villes favorites</p>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Sauvegarder
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="notifications-list">
+                            <h3>Notifications récentes</h3>
+                            <div id="notifications-list">
+                                <!-- Chargé dynamiquement -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paramètres -->
+                    <div id="settings-tab" class="profile-tab">
+                        <h2><i class="fas fa-cog"></i> Paramètres du compte</h2>
+                        
+                        <form id="profile-settings-form" class="settings-form">
+                            <div class="form-section">
+                                <h3>Informations personnelles</h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="settings-nom">Nom</label>
+                                        <input type="text" id="settings-nom" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-prenom">Prénom</label>
+                                        <input type="text" id="settings-prenom" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="settings-email">Adresse email</label>
+                                    <input type="email" id="settings-email" class="form-control" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="settings-telephone">Téléphone</label>
+                                    <input type="tel" id="settings-telephone" class="form-control">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="settings-ville">Ville de résidence</label>
+                                    <select id="settings-ville" class="form-control">
+                                        <option value="">Sélectionnez votre ville</option>
+                                        <option value="Yaoundé">Yaoundé</option>
+                                        <option value="Douala">Douala</option>
+                                        <option value="Garoua">Garoua</option>
+                                        <option value="Bamenda">Bamenda</option>
+                                        <option value="Maroua">Maroua</option>
+                                        <option value="Bafoussam">Bafoussam</option>
+                                        <option value="Ngaoundéré">Ngaoundéré</option>
+                                        <option value="Bertoua">Bertoua</option>
+                                        <option value="Ebolowa">Ebolowa</option>
+                                        <option value="Kribi">Kribi</option>
+                                        <option value="Limbe">Limbe</option>
+                                        <option value="Buea">Buea</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Sécurité</h3>
+                                <button type="button" class="btn btn-secondary" onclick="showChangePasswordModal()">
+                                    <i class="fas fa-key"></i> Changer le mot de passe
+                                </button>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Sauvegarder les modifications
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Support -->
+                    <div id="support-tab" class="profile-tab">
+                        <h2><i class="fas fa-question-circle"></i> Support & Aide</h2>
+                        
+                        <div class="support-sections">
+                            <div class="support-section">
+                                <h3><i class="fas fa-question"></i> Questions fréquentes</h3>
+                                <div class="faq-list">
+                                    <div class="faq-item">
+                                        <h4>Comment signaler un incident ?</h4>
+                                        <p>Cliquez sur "Signaler" dans le menu, remplissez le formulaire et sélectionnez la position sur la carte.</p>
+                                    </div>
+                                    <div class="faq-item">
+                                        <h4>Comment modifier mes villes favorites ?</h4>
+                                        <p>Rendez-vous dans l'onglet "Villes favorites" de votre profil pour ajouter ou supprimer des villes.</p>
+                                    </div>
+                                    <div class="faq-item">
+                                        <h4>Comment désactiver les notifications ?</h4>
+                                        <p>Dans l'onglet "Notifications", vous pouvez désactiver les types de notifications que vous ne souhaitez plus recevoir.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="support-section">
+                                <h3><i class="fas fa-envelope"></i> Contactez-nous</h3>
+                                <form id="contact-form" class="contact-form">
+                                    <div class="form-group">
+                                        <label for="contact-subject">Sujet</label>
+                                        <select id="contact-subject" class="form-control" required>
+                                            <option value="">Sélectionnez un sujet</option>
+                                            <option value="bug">Signaler un bug</option>
+                                            <option value="feature">Suggérer une fonctionnalité</option>
+                                            <option value="account">Problème de compte</option>
+                                            <option value="general">Question générale</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="contact-message">Message</label>
+                                        <textarea id="contact-message" class="form-control" rows="5" 
+                                                placeholder="Décrivez votre problème ou votre question..." required></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-paper-plane"></i> Envoyer le message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal pour changer le mot de passe -->
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-key"></i> Changer le mot de passe</h3>
+                <button class="modal-close" onclick="closeChangePasswordModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="current-password">Mot de passe actuel</label>
+                        <input type="password" id="current-password" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new-password">Nouveau mot de passe</label>
+                        <input type="password" id="new-password" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-new-password">Confirmer le nouveau mot de passe</label>
+                        <input type="password" id="confirm-new-password" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Changer le mot de passe
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="closeChangePasswordModal()">
+                            Annuler
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RouteAlert Cameroun</h3>
+                    <p>Application dédiée à la sécurité routière au Cameroun.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/profil.js"></script>
+</body>
+</html>
